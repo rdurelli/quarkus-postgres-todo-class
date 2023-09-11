@@ -1,0 +1,28 @@
+services:
+  app-quarkus:
+    depends_on:
+      - postgres-app
+    build:
+        context: .
+        dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - 8080:8080
+    networks:
+      - app-net
+  postgres-app:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=todo
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - app-vol:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+volumes:
+  app-vol:
+
+networks:
+  app-net:
